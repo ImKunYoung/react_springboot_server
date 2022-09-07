@@ -15,6 +15,7 @@
 
 ![](readmeFile/img.png)
 
+<br/>
 
 ## 1.2 배경 지식
 
@@ -75,6 +76,67 @@ Content-Type 은 응답 미디어 타입을 의미한다. 미디어 타입에는
 
 마지막으로 응답 body 가 있다. 서버 애플리케이션은 보통 HTTP 응답 바디에 요청 처리 결과를 보낸다. 예를 들어 www.google.com 에 GET 요청을
 보내면 GOOGLE 의 랜딩 페이지 HTML을 넣어 반환한다.
+
+
+<br/>
+
+### 1.2.2 자바스크립트 오브젝트 노테이션
+
+JSON (JavaScript Object Notation) 은 '오브젝트'를 표현하는 문자열이다.
+
+> - Object란?
+> 오브젝트란 메모리상에 존재하는 어떤 자료 구조이다.
+> 
+> ![](readmeFile/img_6.png)
+> ![](readmeFile/img_7.png)
+> ![](readmeFile/img_8.png)
+
+![](readmeFile/img_9.png)
+
+그림처림 애플리케이션 1은 애플리케이션 2에 인터넷을 통해 TodoItem 을 전송하려 한다. 애플리케이션 1과 애플리케이션 2는 서로
+언어도 다르고 아키텍처도 다르다고 가정하면, 이 오브젝트를 전송하기 위해선 애플리케이션 1과 애플리케이션 2 둘 다 이해할 수 있는 형태로
+오프벡트를 변환해야 한다. 이렇게 저장 또는 전송을 위해 메모리상의 오브젝트를 다른 형태로 변환하는 작업을 직렬화 (Serialization) 라고 하고
+그 반대 작업을 역직렬화 (Deserialization) 라고 한다.
+
+그러면 어떤 형태로 오브젝트를 직렬화할 것인가에 대한 질문이 남는데 JSON 이다.
+
+JSON은 키-값 (Key-value)의 형태로 오브젝트를 표현한 문자열이다.
+
+![](readmeFile/img_10.png)
+
+그림은 TodoItem 오브젝트를 JSON 으로 변환한 예인데, 자바 인스턴스 변수의 이름은 key 가 되고 변수에 들어간 값은 value 가 되는 것을 확인할 수 있다.
+
+![](readmeFile/img_11.png)
+
+![](readmeFile/img_12.png)
+
+위에서 확인할 수 있듯 JSON (Javascript Object Notaion)은 형식이 자바스크립트에서 오브젝트를 생성하는 형식과 같아서 JSON 이라고 
+부른다.
+
+![](readmeFile/img_13.png)
+
+<br/>
+
+다시 애플리케이션 1과 애플리케이션 2의 상황으로 돌아가서 애플리케이션 1과 애플리케이션 2는 JSON 을 이용해 통신하기로 약속했다고 가정하자
+
+![](readmeFile/img_14.png)
+
+그림처럼 오브젝트를 JSON 형태의 문자열로 변환한 후 HTTP 요청의 바디 부분에 변환한 JSON 을 넣어 요청을 전송한다.
+요청을 받은 애플리케이션 2는 HTTP 요청의 바디 부분에서 JSON 을 꺼내 TodoItem 으로 변환해 사용할 수 있다.
+
+![](readmeFile/img_15.png)
+
+정리해보면 브라우저상에서 실행될 리액트 애플리케이션은 JSON 을 요청 바디에 넣어 보낸다. 그러면 자바 백엔드 애플리케이션은 이 JSON 을
+바디에서 꺼내 TodoItem 으로 변환한다. 물론 이러한 변환 과정은 라이브러리와 프레임워크가 대신 해주므로 크게 신경 쓸 일은 없다.
+
+
+
+
+
+
+
+
+
 
 
 
