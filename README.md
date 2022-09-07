@@ -129,6 +129,68 @@ JSON은 키-값 (Key-value)의 형태로 오브젝트를 표현한 문자열이�
 정리해보면 브라우저상에서 실행될 리액트 애플리케이션은 JSON 을 요청 바디에 넣어 보낸다. 그러면 자바 백엔드 애플리케이션은 이 JSON 을
 바디에서 꺼내 TodoItem 으로 변환한다. 물론 이러한 변환 과정은 라이브러리와 프레임워크가 대신 해주므로 크게 신경 쓸 일은 없다.
 
+<br/>
+
+### 1.2.3 서버란?
+
+서버란 프로그램인데 특정 포트, 예를 들어 8080 포트에 소켓을 열고 클라이언트가 연결할 때까지 무한 대기하며 기다린다. 긜고 클라이언트가 연결하면
+해당 클라이언트 소켓에서 요청을 받아와 수행하고 응답을 작성해 전달한다.
+
+
+- 아주 간단한 서버 예
+
+```java
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class WebServer {
+
+    public static void main(String[] args) {
+        new WebServer().run();
+    }
+
+    public void run() {
+        try {
+            ServerSocket serverSocket = new ServerSocket(8080);
+            while (true) {
+                try {
+                    Socket client = serverSocket.accept();
+                    new Thread(() -> handleClient(client)).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static void handleClient(Socket client) {
+        // (1) 클라이언트의 요청 읽어오기
+        // (2) 클라이언트의 요청에 맞는 작업 수행하기
+        // (3) 클라이언트에게 응답 작성하기
+        // (4) 소켓 닫기
+    }
+}
+```
+
+예시처럼 아주 간단한 서버에서 클라이언트에게 요청을 읽어올 때 또는 응답을 작성할 때 FTP (File Transfer Protocol) 을 사용한다면 FTP 서버가 되는 것이고,
+하이퍼텍스트 트랜스퍼 프로토콜을 사용한다면 HTTP 서버가 되는 것이다. 어찌되었건 서버는 네트워크 오퍼레이션을 수행하는 프로그램이다.
+
+<br/>
+
+### 1.2.4 정적 웹 서버
+
+
+
+
+
+
+
+
+
+
+
 
 
 
