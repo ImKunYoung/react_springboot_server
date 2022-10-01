@@ -331,8 +331,24 @@ repositories {
 |:---|:--|
 |mavenCentral| 그레이들이 라이브러리를 다운 받는 곳 |
 
+<br/>
 
+- Dependency
 
+```groovy
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+```
+
+|키워드| 설명 |
+|:---|:--|
+|dependencies| 디펜던시 부분에 명시된 라이브러리들은 그레이들이 리포지터리에서 다운 및 설치함 |
 
 
 
