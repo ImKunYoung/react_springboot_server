@@ -385,6 +385,53 @@ dependencies {
 }
 ```
 
+<br/>
+<br/>
+
+### 2.1.9 롬복
+롬복을 사용하면 getter, setter, builder, constructor 작성이 간편해짐.
+롬복이 제공하는 어노테이션 프로세서 annotationProcessor가 getter, setter .. 를 프롲게트 컴파일시 자동 작성해줌.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
