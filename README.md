@@ -317,6 +317,43 @@ dependencies {
 |annotationProcessor| annotationProcessor를 통해 lomok을 사용하도록 디펜던시에 명시 |
 
 
+<br/>
+
+- repositories
+
+```groovy
+repositories {
+    mavenCentral()
+}
+```
+
+|키워드| 설명 |
+|:---|:--|
+|mavenCentral| 그레이들이 라이브러리를 다운 받는 곳 |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
