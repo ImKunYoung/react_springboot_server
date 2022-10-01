@@ -219,6 +219,109 @@ html 파일을 구성하거나 템플릿 html 파일에서 적절한 값을 대�
 사용하게될 스프링 부트도 내부적으론 서블릿 엔진의 사용을 위해 서블릿을 상속 및 구현한다. 
 
 
+---
+
+<br/>
+<br/>
+<br/>
+
+# 2장 백엔드 개발
+
+### 2.1.3 스프링 프레임워크와 의존성 주입
+
+- 스프링이란?
+스프링이란 오픈 소스의 경량 프레임워크이다. 보통 경량 프레임워크라 함은 해당 프레임워크 사용 시 메모리나 CPU 자원이 많이 들지 않거나 사용이 쉽고 간편한 경우를 경량 프레임워크라고 부른다.
+프레임워크는 개발자들이 확장해서 사용할 수 있는 코드이다. 여기서 확장이란 프레임워크가 제공하는 클래스나 라이브러리를 사용하거나 프레임워크가 제공하는 클래스나 인터페이스를 상속 및 구현해 프레임워크의 일부로 실행하는 것을 의미한다.
+스프링 프레임워크에는 여러 가지 컴포넌트가 존재하는데 의존성 주입 외에도 스프링 AOP (Aspect Oriented PRogramming), 스프링 ORM, 스프링 웹 등 여러 방면에서 개발을 돕는 프레임워크를 제공한다.
+우리가 사용할 컴포넌트는 스프링 부트이다.
+
+<br/>
+<br/>
+
+### 2.1.7 빌드 자동화 툴: Gradle과 라이브러리
+
+- build.gradle
+
+```groovy
+plugins {
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
+    id 'war'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+```
+
+<br/>
+
+- 프로젝트 메타데이터
+
+```groovy
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+```
+
+| 키워드     | 설명                                                                   |
+|:--------|:---------------------------------------------------------------------|
+| group   | artifact(애플리케이션)를 배포하는 데 사용                                          |
+| version | 이 프로젝트의 버전. 일반적으로 프로덕션 배포마다 버전이 올라감. 그리고 버전을 어떻게 올리는지는 개개의 프로젝트마다 다름 |
+|sourceCompatibility| sourceCompatibility에 자바 버전을 명시                                       |
+
+
+<br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+|키워드| 설명  |
+|:---|:----|
+|||
+
+
+
+
+
+
+
+
+
+
 
 
 
