@@ -366,14 +366,24 @@ tasks.named('test') {
 |test| JUnitPlatform을 사용해 유닛 테스트를 하도록 명시 |
 
 
+<br/>
+<br/>
 
+### 2.1.8 디펜던시 라이브러리 추가
+구글 구아바 라이브러리를 추가해보자!
 
+![](readmeFile/img_19.png)
 
+![](readmeFile/img_20.png)
 
+![](readmeFile/img_21.png)
 
-
-
-
+- 그래들 스니펫 디펜던시 섹션에 추가
+```groovy
+dependencies {
+    implementation 'com.google.guava:guava:31.1-jre'
+}
+```
 
 
 
