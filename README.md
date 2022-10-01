@@ -429,7 +429,7 @@ REST API는 URI(Unified Resource Identifier), HTTP 메서드, 요청 매개변�
 레이어드 아키텍처 패턴은 스프링 프로젝트 내부에서 어떻게 코드를 적절히 분리하고 관리할 것이냐에 대한 내용임. <br/>
 REST 아키텍처 스타일은 클라이언트가 우리 서비스를 이용하려면 어떤 형식으로 요청을 보내고 응답을 받는지에 대한 내용이고, REST 아키텍처 스타일을 따라 설계 및 구현된 서비스를 RESTful 서비스라고 함.
 
-
+<br/>
 <br/>
 
 ### 2.2.1 레이어드 아키텍처
@@ -438,11 +438,38 @@ REST 아키텍처 스타일은 클라이언트가 우리 서비스를 이용하�
 
 레이어드 아키텍처 패턴은 애플리케이션을 구성하는 요소들을 수평으로 나누어 관리하는 것을 말함.
 
+<br/>
+<br/>
 
+### 2.2.2 모델, 엔티티, DTO
 
+![](readmeFile/img_24.png)
 
+모델, 엔티티, DTO는 아무 기능 없이 데이터베이스에서 반환된 비즈니스 데이터를 담기 위한 클래스들임.
 
+- 모델과 엔티티
+큰 애플리케이션의 경우 모델과 엔티티를 따로 구현하지만 규모가 작은 경우 합쳐서 구현함.
 
+```java
+package com.example.react_springboot_server.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class TodoEntity {
+    private String id; // 이 오브젝트의 아이디
+    private String userId; // 이 오브젝트를 생성한 사용자의 아이디
+    private String title; // Todo 타이틀 (예: 운동하기)
+    private boolean done; // true - todo를 완료한 경우 (checked)
+}
+
+```
 
 
 
