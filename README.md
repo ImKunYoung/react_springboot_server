@@ -393,9 +393,25 @@ dependencies {
 롬복이 제공하는 어노테이션 프로세서 annotationProcessor가 getter, setter .. 를 프롲게트 컴파일시 자동 작성해줌.
 
 
+<br/>
 
+- 롬복 테스팅
 
+```java
+package com.example.react_springboot_server;
 
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@Builder
+@RequiredArgsConstructor
+public class DemoModel {
+
+    @NonNull
+    private String id;
+}
+```
 
 
 
