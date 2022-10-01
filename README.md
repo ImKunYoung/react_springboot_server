@@ -496,6 +496,74 @@ public class TodoEntity {
 > Getter/Setter 메서드를 구현해줌
 
 
+<br/>
+
+- DTO
+
+서비스가 요청을 처리하고 클라이언트로 반환할 때 모델 자체를 그대로 리턴하는 경우는 별로 없음. <br/>
+DTO를 사용함으로서 비즈니스 로직을 캡슐화하고, 외부 사용자에게 서비스 내부의 로직과 데이터베이스 구조를 숨김 <br/>
+또한 클라이언트가 필요한 정보를 모델이 전부 포함하지 않는 경우가 많음. 예를 들어 서비스 실행 중 사용자에게 에러가 발생하면
+DTO에 에러 메시지 필드를 선언하고 DTO에 포함함 (모델은 서비스 로직과 관련 없음)
+
+<br/>
+
+- TodoDTO (Todo 아이템을 생성, 수정, 삭제)
+```java
+import com.example.react_springboot_server.model.TodoEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class TodoDTO {
+    private String id;
+    private String title;
+    private boolean done;
+
+    public TodoDTO(final TodoEntity entity) {
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.done = entity.isDone();
+    }
+
+}
+```
+
+> 사용자가 자기 아이디를 넘겨주지 않아도 인증이 가능함. userId는 애플리케이션과 데이터베이스에서 사용자를 구별하는 고유 식별자로 사용하기 때문에 숨길 수 있다면 숨김
+
+<br/>
+
+- ResponseDTO (HTTP 응답으로 사용할 예정)
+
+```java
+package com.example.react_springboot_server.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class ResponseDTO<T> {
+    private String error;
+    private List<T> data;
+}
+
+```
+
+> 다른 모델의 DTO도 ResponseDTO를 이용해 리턴할 수 있도록 Generic 타입 활용
+
+
+
 
 
 
