@@ -413,9 +413,14 @@ public class DemoModel {
 }
 ```
 
+<br/>
+<br/>
 
+### 2.1.10 포스트맨 API 테스트
+REST API는 URI(Unified Resource Identifier), HTTP 메서드, 요청 매개변수, 요청 바디로 구분됨.
+이를 테스팅하기 위해선 브라우저 환경, cURL (커맨드라인 툴), 포스트맨 (GUI 환경) 등이 있음.
 
-
+![](readmeFile/img_22.png)
 
 
 
