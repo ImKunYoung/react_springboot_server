@@ -297,9 +297,24 @@ sourceCompatibility = '17'
 
 <br/>
 
+- Lombok
 
+```groovy
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok'
+}
+```
 
+|키워드| 설명                                            |
+|:---|:----------------------------------------------|
+|configurations| annotationProcessor를 컴파일시 사용하라고 그래이들에게 알려줌    |
+|annotationProcessor| annotationProcessor를 통해 lomok을 사용하도록 디펜던시에 명시 |
 
 
 
