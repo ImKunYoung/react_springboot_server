@@ -350,9 +350,20 @@ dependencies {
 |:---|:--|
 |dependencies| 디펜던시 부분에 명시된 라이브러리들은 그레이들이 리포지터리에서 다운 및 설치함 |
 
+<br/>
+
+- Test
 
 
+```groovy
+tasks.named('test') {
+    useJUnitPlatform()
+}
+```
 
+|키워드| 설명                                |
+|:---|:----------------------------------|
+|test| JUnitPlatform을 사용해 유닛 테스트를 하도록 명시 |
 
 
 
