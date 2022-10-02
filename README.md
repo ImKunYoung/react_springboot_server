@@ -611,6 +611,96 @@ REST 아키텍처 스타일은 6가지 제약조건으로 구성되며 이 가�
 
 이는 선택사항이다. 분산 컴퓨팅에서 주문형 코드는 클라이언트 소프트웨어의 요청에 따라 서버 컴퓨터에서 클라이언트 컴퓨터로 실행 가능한 소프트웨어 코드를 보내는 것을 말한다.
 
+<br/>
+<br/>
+
+### 2.2.4 컨트롤러 레이어: 스프링 REST API 컨트롤러
+
+<br/>
+
+- HTTP 요청
+
+```http request
+GET /test HTTP/1.1
+HOST: localhost:8080
+Content-Type: application/json
+Content-Length: 17
+{
+"id": 123
+}
+```
+
+> localhost:8080에 http GET 메서드를 이용해 test라는 리소스를 요청해라! <br/>
+> 서버는 자기 주소를 제외한 /{리소스} 부분을 이해하고 이 요청이 어떤 HTTP 메서드를 이용했는지 알아야 함 <br/>
+> -> 이를 spring-boot-starter-web의 어노테이션이 쉽게 도와줌
+
+
+- 스프링 부트 스타터 build.gradle
+```groovy
+implementation 'org.springframework.boot:spring-boot-starter-web'
+```
+
+
+<br/>
+
+- TestController
+
+```java
+package com.example.react_springboot_server.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("test") // 리소스
+public class TestController {
+
+    @GetMapping
+    public String testController() {
+        return "Hello World!";
+    }
+}
+```
+
+| 키워드             | 설명                                 |
+|:----------------|:-----------------------------------|
+| @RestController | 이 컨트롤러가 RestController임을 명시        |
+| @GetMapping | 이 메서드의 리소스와 HTTP 메서드를 지정.          |
+
+![](readmeFile/img_25.png)
+
+<br/>
+
+- 결과
+
+![](readmeFile/img_26.png)
+
+![](readmeFile/img_27.png)
+
+
+
+[//]: # (TODO -p66)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
