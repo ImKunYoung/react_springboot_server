@@ -1045,6 +1045,188 @@ public class TodoController {
 ![](readmeFile/img_37.png)
 
 
+<br/>
+<br/>
+<br/>
+
+### 2.2.6 퍼시스턴스 레이어 : 스프링 데이터 JPA
+
+<br/>
+
+- 데이터베이스와 스프링 데이터 JPA 설정
+
+<br/>
+
+- build.gradle h2 디펜던시 추가
+ 
+```groovy
+dependencies {
+    /*...*/
+    runtimeOnly 'com.h2database:h2'
+}
+```
+
+H2는 In-Memory 데이터베이스로 로컬 환경에서 메모리상에 데이터베이스를 구축해줌. 
+
+<br/>
+
+- spring-boot-starter-data-jpa 디펜던시 추가
+
+```groovy
+dependencies {
+    // ...
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+}
+```
+
+<br/>
+
+
+- h2 데이터베이스가 잘 추가되었는지 확인
+
+```shell
+2022-10-03 18:06:19.570  INFO 12576 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-03 18:06:19.602  INFO 12576 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-03 18:06:19.714  INFO 12576 --- [  restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-03 18:06:19.799  INFO 12576 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-10-03 18:06:19.928  INFO 12576 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal
+```
+
+> JPA Provider로 Hibernate ORM을 사용하는 것과 데이터베이스로 h2를 사용한다는 것을 확인할 수 있음.
+
+
+<br/>
+
+- 엔티티 클래스
+
+하나의 엔티티 인스턴스는 데이터베이스 테이블의 한 행에 해당함
+
+![](readmeFile/img_38.png)
+
+엔티티 클래스는 그 자체가 테이블을 정의해야 하며, 테이블 스키마 관련 정보는 JPA 관련 어노테이션을 이용해 정의해야 함.
+
+
+
+<br/>
+
+- TodoEntity
+
+```java
+package com.example.react_springboot_server.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Entity
+@Table(name = "Todo")
+public class TodoEntity {
+    @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    private String id; // 이 오브젝트의 아이디
+    private String userId; // 이 오브젝트를 생성한 사용자의 아이디
+    private String title; // Todo 타이틀 (예: 운동하기)
+    private boolean done; // true - todo를 완료한 경우 (checked)
+}
+```
+
+| 키워드                                                        | 설명                                                           |
+|:-----------------------------------------------------------|:-------------------------------------------------------------|
+| @Entity("~~~")                                             | 엔티티 이름 지정 가능                                                 |
+|@Id| pk 지정                                                        |
+|@Table(name = "Todo")| 테이블 이름 Todo로 지정, 지정 안하면 보통 클래스 이름 따라감 (db마다 규칙이 다른데 그거 준수해서) |
+| @GeneratedValue(generator = "system-uuid")                 | ID 자동 생성                                                     |
+| @GenericGenerator(name = "system-uuid", strategy = "uuid") | ID 생성 방식 지정 (uuid)                                           |
+
+
+> 기본 Generator로는 INCREMENTAL, SEQUENCE, IDENTITY 등이 있는데 문자열 형태의 UUID 사용을 위해 커스텀 generator를 만듦
+
+<br/>
+
+- TodoRepository
+
+```java
+package com.example.react_springboot_server.persistance;
+
+import com.example.react_springboot_server.model.TodoEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TodoRepository extends JpaRepository<TodoEntity, String> {
+}
+```
+
+| 키워드                                       | 설명                                        |
+|:------------------------------------------|:------------------------------------------|
+|@Repository| 얘 또한 @Component의 특별 케이스임                  |
+| JpaRepository<TodoEntity, String> | JpaRepository<매핑될 엔티티 클래스, 매핑될 엔티티 pk 타입> |
+
+<br/>
+
+- TodoService에서 TodoRepository 사용
+
+
+```java
+package com.example.react_springboot_server.service;
+
+import com.example.react_springboot_server.model.TodoEntity;
+import com.example.react_springboot_server.persistance.TodoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class TodoService {
+
+    @Autowired
+    private TodoRepository repository;
+
+    public String testService() {
+        // TodoEntity 생성
+        TodoEntity entity = TodoEntity.builder().title("My first todo item").build();
+        // TodoEntity 저장
+        repository.save(entity);
+        // TodoEntity 검색
+        TodoEntity savedEntity = repository.findById(entity.getId()).get();
+        return savedEntity.getTitle();
+    }
+
+}
+```
+
+<br/>
+
+- TodoService에서 TodoRepository 테스트
+
+![](readmeFile/img_39.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
