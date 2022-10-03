@@ -711,7 +711,6 @@ public class TestController {
 | /test/... return JSON | @ResponseBody 이용 |
 | /test/... status 조작   | @ResponseEntity 이용 |
 
-[//]: # (TODO - 714)
 
 <br/>
 <br/>
@@ -966,18 +965,84 @@ public class TodoController {
 ![](readmeFile/img_36.png)
 
 
+<br/>
+<br/>
+<br/>
 
+### 2.2.5 서비스 레이어 : 비즈니스 로직
 
+서비스 레이어는 컨트롤러와 퍼시스턴스 사이에서 비즈니스 로직을 수행하는 역할을 함.
 
+<br/>
 
+- TodoService
 
+```java
+package com.example.react_springboot_server.service;
 
+import org.springframework.stereotype.Service;
 
+@Service
+public class TodoService {
 
+    public String testService() {
+        return "Test Service";
+    }
+    
+}
+```
 
+|키워드| 설명                                                                              |
+|:---|:--------------------------------------------------------------------------------|
+|@Service| @Service는 내부에 @Componenet를 갖고 있으며, @Service는 기능적으로로 비즈니스 로직을 수행하는 서비스 레이어임을 알려줌 |
 
+<br/>
 
+- TodoService
 
+```java
+package com.example.react_springboot_server.controller;
+
+import com.example.react_springboot_server.dto.ResponseDTO;
+import com.example.react_springboot_server.service.TodoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("todo")
+public class TodoController {
+
+    @Autowired
+    private TodoService service;
+
+    @GetMapping("/test")
+    public ResponseEntity<?> testTodo() {
+        String str = service.testService(); // 테스트 서비스 사용
+        List<String> list = new ArrayList<>();
+        list.add(str);
+        ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
+        return ResponseEntity.ok().body(response);
+    }
+
+}
+
+```
+
+|키워드| 설명                                                 |
+|:---|:---------------------------------------------------|
+|@Autowired| @Autowired이 알아서 빈을 찾은 다음 그 빈을 이 인스턴스 멤버 변수에 연결하라 ! |
+
+<br/>
+
+- 테스팅
+
+![](readmeFile/img_37.png)
 
 
 

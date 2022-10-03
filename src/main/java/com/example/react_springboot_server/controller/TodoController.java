@@ -1,6 +1,8 @@
 package com.example.react_springboot_server.controller;
 
 import com.example.react_springboot_server.dto.ResponseDTO;
+import com.example.react_springboot_server.service.TodoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +15,15 @@ import java.util.List;
 @RequestMapping("todo")
 public class TodoController {
 
-    @GetMapping("/testTodo")
+    @Autowired
+    private TodoService service;
+
+    @GetMapping("/test")
     public ResponseEntity<?> testTodo() {
+        String str = service.testService(); // 테스트 서비스 사용
         List<String> list = new ArrayList<>();
-        list.add("Hello World! I'm Response Entity. And you got 200!");
+        list.add(str);
         ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
-        // http status를 200으로 설정
         return ResponseEntity.ok().body(response);
     }
 
