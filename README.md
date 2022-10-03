@@ -680,7 +680,290 @@ public class TestController {
 
 
 
-[//]: # (TODO -p66)
+| 어노테이션          | HTTP 메서드 |
+|:---------------|:---------|
+| @GetMapping    | GET      |
+| @PostMapping   | POST     |
+| @PutMapping    | PUT      |
+| @DeleteMapping | DELETE   |
+
+
+
+> 위 어노테이션은 스프링 4.3부터 지원되기 시작했으며 그 이전에는, <br/>
+> @RequestMapping(value="/path", method=RequestMethod.GET) <br/> 
+> 처럼 하나의 어노테이션에 HTTP 메서드를 매겨변수로 주는 형태로 컨트롤러 메서드를 연결했다.
+
+
+
+<br/>
+
+- 매개변수를 넘겨받는 방법
+
+/test가 아닌 /test/{id}로 PathVariable이나 /test?id=123처럼 요청 매개변수를 받아야 한다면 어떻게 해야 할지 알아보자 !
+
+<br/>
+
+| 종류                    | 어노테이션            |
+|:----------------------|:-----------------|
+| /test/{id}            | @PathVariable 이용 |
+| /test?id=123          | @RequestParam 이용 |
+| /test/path(JSON)      | @RequestBody 이용  |
+| /test/... return JSON | @ResponseBody 이용 |
+| /test/... status 조작   | @ResponseEntity 이용 |
+
+[//]: # (TODO - 714)
+
+<br/>
+<br/>
+
+- PathVariable을 이용한 매개변수 전달
+
+![](readmeFile/img_28.png)
+
+```java
+package com.example.react_springboot_server.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("test") // 리소스
+public class TestController {
+
+    @GetMapping("/{id}")
+    public String testControllerWithPathVariable(@PathVariable(required = false) int id) {
+        return "Hello World! ID"+id;
+    }
+
+}
+```
+
+<br/>
+
+- 결과
+
+![](readmeFile/img_30.png)
+
+> required = false는 이 매개변수가 꼭 필요한 것은 아니라는 뜻
+
+
+<br/>
+<br/>
+
+- RequestParam을 이용한 매개변수 전달
+
+![](readmeFile/img_29.png)
+
+<br/>
+
+- 결과
+
+![](readmeFile/img_31.png)
+
+
+<br/>
+<br/>
+
+- RequestBody을 이용한 JSON 전달
+
+반환하고자 하는 리소스가 복잡할 때. (오브젝트 등)
+
+![](readmeFile/img_32.png)
+
+
+```java
+package com.example.react_springboot_server.dto;
+
+import lombok.Data;
+
+@Data
+public class TestRequestDTO {
+    private int id;
+    private String message;
+}
+```
+
+
+```java
+package com.example.react_springboot_server.controller;
+
+import com.example.react_springboot_server.dto.TestRequestDTO;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("test") // 리소스
+public class TestController {
+
+
+    /*....*/
+    
+    @GetMapping("/testRequestBody")
+    public String testControllerRequestBody(@RequestBody TestRequestDTO testRequestDTO) {
+        return "Hello World! ID " + testRequestDTO.getId() + "Message : " + testRequestDTO.getMessage();
+    }
+
+}
+```
+
+<br/>
+
+|키워드| 설명                                                                                                              |
+|:---|:----------------------------------------------------------------------------------------------------------------|
+|@RequestBody TestRequestDTO testRequestDTO| ✏ RequestBody로 보내는 JSON을 TestRequestBodyDTO 오브젝트로 변환해 가져오라 <br/> ✏ JSON의 내부 구조는 의미적으로 TestRequestBodyDTO와 같아야 함 |
+
+> 예를 들어 JSON을 { id: 실수 } 이렇게 넘겨주면 에러가 발생함.
+
+
+<br/>
+
+- 테스트
+
+![](readmeFile/img_33.png)
+
+
+<br/>
+<br/>
+
+- ResponseBody 이용한 오브젝트 반환 (JSON 반환)
+
+@RestController의 내부는 다음과 같음
+
+```java
+@Controller
+@ResponseBody
+public @interface RestController {
+    // ...
+}
+```
+
+<br/>
+
+| 키워드         | 설명                                                                                                        |
+|:------------|:----------------------------------------------------------------------------------------------------------|
+| @Controller | @Component로 스프링이 이 클래스의 오브젝트를 알아서 생성하고 다른 오브젝트들과의 의존성을 연결한다                                               |
+| @ResponseBody          | 이 클래스의 메서드가 리턴하는 것은 웹 서비스의 ResponseBody이다. -> 메서드가 리턴할 때 스프링은 리턴된 오브젝트를 JSON 형태로 바꾸고 HttpResponse에 담아 반환함 |
+
+
+<br/>
+
+- ResponseDTO를 반환하는 컨트롤러 메서드
+
+```java
+package com.example.react_springboot_server.controller;
+
+import com.example.react_springboot_server.dto.ResponseDTO;
+import com.example.react_springboot_server.dto.TestRequestDTO;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("test") // 리소스
+public class TestController {
+
+
+    // ...
+    
+    @GetMapping("/testResponseBody")
+    public ResponseDTO<String> testControllerResponseBody() {
+        List<String> list = new ArrayList<>();
+        list.add("Hello Wolrd! I'm ResponseDTO");
+        ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
+        return response;
+    }
+
+}
+```
+
+<br/>
+
+- ResponseDTO를 반환하는 컨트롤러 메서드 - 결과
+
+![](readmeFile/img_34.png)
+
+<br/>
+<br/>
+
+- ResponseEntity를 이용한 HTTP 응답 바디, 매개변수 조작
+
+```java
+package com.example.react_springboot_server.controller;
+
+import com.example.react_springboot_server.dto.ResponseDTO;
+import com.example.react_springboot_server.dto.TestRequestDTO;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("test") // 리소스
+public class TestController {
+
+    // ...
+    
+    @GetMapping("/testReponseEntity")
+    public ResponseEntity<?> testControllerResponseEntity() {
+        List<String> list = new ArrayList<>();
+        list.add("Hello World! I'm Response Entity. And you got 400!");
+        ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
+        // http status를 400으로 설정
+        return ResponseEntity.badRequest().body(response);
+    }
+
+}
+
+```
+
+<br/>
+
+- 결과
+
+![](readmeFile/img_35.png)
+
+
+<br/>
+<br/>
+
+- ResponseEntity를 이용한 HTTP 응답 바디, 매개변수 조작 - OK 
+
+```java
+package com.example.react_springboot_server.controller;
+
+import com.example.react_springboot_server.dto.ResponseDTO;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("todo")
+public class TodoController {
+
+    @GetMapping("/testTodo")
+    public ResponseEntity<?> testTodo() {
+        List<String> list = new ArrayList<>();
+        list.add("Hello World! I'm Response Entity. And you got 200!");
+        ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
+        // http status를 200으로 설정
+        return ResponseEntity.ok().body(response);
+    }
+
+}
+```
+
+<br/>
+
+- 결과
+
+![](readmeFile/img_36.png)
 
 
 
@@ -717,13 +1000,7 @@ public class TestController {
 
 
 
-
-
-
-
-
-
-
+<br/>
 
 |키워드| 설명  |
 |:---|:----|
